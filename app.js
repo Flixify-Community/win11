@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './App.css'; // Import local styles
 
 // Desktop Icon Component
 const DesktopIcon = ({ name, icon, onClick }) => (
@@ -11,7 +11,7 @@ const DesktopIcon = ({ name, icon, onClick }) => (
 
 // Window Component
 const Window = ({ title, onClose }) => (
-    <div className="window" style={{ left: "200px", top: "150px" }}>
+    <div className="window">
         <div className="window-header">
             <span>{title}</span>
             <button className="close-btn" onClick={onClose}>×</button>
@@ -27,7 +27,9 @@ const App = () => {
     const [windows, setWindows] = useState([]);
 
     const openWindow = (appName) => {
-        setWindows([...windows, appName]);
+        if (!windows.includes(appName)) {
+            setWindows([...windows, appName]);
+        }
     };
 
     const closeWindow = (appName) => {
@@ -37,6 +39,7 @@ const App = () => {
     return (
         <div className="app">
             <div className="desktop">
+                {/* Desktop Icons */}
                 <DesktopIcon 
                     name="Browser" 
                     icon="https://img.icons8.com/ios-filled/50/ffffff/google-chrome.png" 
@@ -58,9 +61,11 @@ const App = () => {
                     onClick={() => openWindow('Calculator')} 
                 />
             </div>
+            {/* Taskbar */}
             <div className="taskbar">
                 <div className="start">Start</div>
             </div>
+            {/* Open Windows */}
             {windows.map((window) => (
                 <Window key={window} title={window} onClose={() => closeWindow(window)} />
             ))}
